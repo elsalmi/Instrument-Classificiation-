@@ -2,11 +2,8 @@ CSCI – 89: Deep Learning
 
 # Musical Instrument Classification
 
-Mohamed ElSalmi
 
-
-
-PROBLEM STATEMENT
+# Problem Statement
 
 The purpose of this project is to classify Music Instrument according to their different attributes. I shall be implementing an assortment of different classifiers from supervised approached to Convolutional Neural Networks. In order to do I will convert the audio files to spectrograms. The priority for this project is accuracy, hence, I shall aim to implement different architectures whilst also testing the viability of pre-trained models. This project relies heavily on Librosa to process and explore the wave files, SKLearn&#39;s packages for Supervised training and PyTorch/fast.ai for CNN Networks.
 
