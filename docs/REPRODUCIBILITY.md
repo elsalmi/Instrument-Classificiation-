@@ -2,13 +2,14 @@
 
 ## Current state
 
-The repo is notebook-first. It preserves the original exploration path but does
-not yet provide a one-command pipeline. The notebooks assume local data folders
-and generated pickle/image artifacts that are not committed.
+The repo is notebook-first, but it now has a lightweight rebuild path:
+
+- `environment.yml` pins the legacy stack.
+- `scripts/rebuild_report.py` can rebuild the feature tables and short report.
 
 ## Legacy environment
 
-The original README lists:
+The original notebook stack was:
 
 - Python 3.6
 - Librosa 0.7.2
@@ -16,21 +17,15 @@ The original README lists:
 - AWS `g4dn.4xlarge`
 - NVIDIA T4 GPU
 
-The pretrained CNN notebook prints:
+Use `environment.yml` as the starting point for that runtime.
 
-```text
-FastAI Version: 1.0.60
-Librosa Version: 0.7.2
-```
+## Rebuild order
 
-## Rerun order
-
-1. Download NSynth locally.
-2. Run `1.Data_Wrangling.ipynb` to generate feature tables.
-3. Run `3.JSON_EDA.ipynb` to validate metadata and split assumptions.
-4. Run `4.SupervisedLearning.ipynb` for random forest baselines.
-5. Run `5.CNN_Prep.ipynb` to generate spectrogram images.
-6. Run `6.CNNModel.ipynb` and `7.CNNModel_Pretrained.ipynb` for CNN experiments.
+1. Download NSynth locally using the layout in [docs/DATA.md](docs/DATA.md).
+2. Run `scripts/rebuild_report.py` to rebuild the train/valid feature tables.
+3. Inspect `reports/REPORT.md` for the current supervised baseline metrics.
+4. Use `5.CNN_Prep.ipynb`, `6.CNNModel.ipynb`, and `7.CNNModel_Pretrained.ipynb`
+   for the CNN path.
 
 ## Current reported metrics
 
@@ -41,13 +36,14 @@ Librosa Version: 0.7.2
 | Random forest | 54.20% |
 | Randomized-search random forest | 57.57% |
 
-CNN notebooks contain confusion matrix outputs and most-confused class pairs,
-but no clear final accuracy table in committed output.
+## Class-set warning
 
-## Next reproducibility pass
+The supervised baseline uses 11 classes, while the CNN notebooks currently use
+an 8-class image-folder setup. The class sets need to be aligned before any
+final cross-path benchmark claim.
 
-1. Add `requirements.txt` or `environment.yml` for the legacy runtime.
-2. Move feature extraction into `src/features.py`.
-3. Move supervised baselines into `src/train_baseline.py`.
-4. Add `src/report.py` to regenerate `reports/REPORT.md`.
-5. Save confusion matrices under `reports/figures/`.
+## Hygiene
+
+- Do not commit raw NSynth audio.
+- Do not commit generated spectrogram folders or model checkpoints.
+- Keep notebook checkpoints and other scratch output ignored.

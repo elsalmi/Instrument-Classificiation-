@@ -2,15 +2,17 @@
 
 ## TL;DR
 
-This project classifies NSynth musical notes by instrument family using two
-paths:
+This project classifies NSynth musical notes by instrument family using a
+feature-based supervised path and a separate CNN path.
 
-1. Feature-based supervised learning over extracted audio features.
-2. CNN experiments over spectrogram-style image representations.
+The current committed evidence is the 11-class supervised baseline:
 
-The strongest current evidence is the notebook-backed baseline report: a random
-forest reached `54.20%` accuracy, and a randomized-search random forest reached
-`57.57%` accuracy on the validation split captured in `4.SupervisedLearning.ipynb`.
+- Random forest accuracy: `54.20%`
+- Randomized-search random forest accuracy: `57.57%`
+
+The CNN notebooks are still a separate path and use an 8-class image-folder
+setup, so the two benchmark tracks should not be compared directly until the
+class alignment is fixed.
 
 ## What is in this repo
 
@@ -24,12 +26,14 @@ forest reached `54.20%` accuracy, and a randomized-search random forest reached
 | `7.CNNModel_Pretrained.ipynb` | CNN experiments with pretrained fast.ai vision models |
 | [docs/DATA.md](docs/DATA.md) | Dataset source, expected layout, and license note |
 | [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) | Environment and rerun plan |
+| [environment.yml](environment.yml) | Pinned legacy environment for the notebook stack |
+| [scripts/rebuild_report.py](scripts/rebuild_report.py) | Rebuilds feature tables and `reports/REPORT.md` |
 | [reports/REPORT.md](reports/REPORT.md) | Current metric snapshot and demo plan |
 
 ## Problem
 
-Given a short audio note, predict the instrument family. The portfolio version
-of the project emphasizes:
+Given a short audio note, predict the instrument family. The repo keeps the
+evaluation visible:
 
 - Clear dataset provenance.
 - A reproducible feature pipeline.
@@ -63,7 +67,17 @@ The original hardware and software notes were:
 - Librosa 0.7.2
 - fast.ai 1.0.60
 
-## Reported metrics
+## Reproducibility
+
+Run the notebooks in the order described in
+[docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md). The rebuild script follows
+the notebook logic and can regenerate the feature tables plus the short report:
+
+```bash
+python scripts/rebuild_report.py --write
+```
+
+## Evidence snapshot
 
 The current committed metric evidence comes from `4.SupervisedLearning.ipynb`.
 
@@ -73,8 +87,8 @@ The current committed metric evidence comes from `4.SupervisedLearning.ipynb`.
 | Randomized-search random forest accuracy | 57.57% |
 
 CNN notebooks include confusion matrix and most-confused-pair outputs, but no
-clear final metric table is committed. Those metrics are intentionally marked as
-pending in [reports/REPORT.md](reports/REPORT.md).
+clear final metric table is committed. Those metrics remain pending until the
+8-class CNN path is aligned with the 11-class supervised baseline.
 
 ## Demo plan
 
@@ -96,8 +110,7 @@ rerun order and environment constraints.
 
 ## Next engineering steps
 
-1. Add a pinned environment file for the legacy notebook stack.
-2. Extract feature generation into a deterministic script.
+1. Regenerate the metrics from the pinned legacy environment.
+2. Align the CNN class set with the 11-class baseline before comparing numbers.
 3. Export confusion matrices and metrics into `reports/`.
-4. Build a small demo using synthetic or user-provided clips rather than
-   committing dataset audio.
+4. Keep heavy data and generated artifacts out of the main branch.

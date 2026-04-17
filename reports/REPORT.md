@@ -1,17 +1,16 @@
 # Instrument Classification Report
 
+This report summarizes the notebook-derived evidence currently committed in the
+repository. The supervised baseline uses the 11-class NSynth instrument set,
+while the CNN notebooks use an 8-class image-folder setup. Those two tracks
+should not be compared directly until the class alignment is fixed.
+
 ## Executive summary
 
-This report summarizes the evidence currently committed in the notebook outputs.
-It does not retrain models.
+The strongest committed evidence is the supervised-learning baseline:
 
-The strongest reproducible evidence is the supervised-learning baseline:
-
-- Random forest accuracy: `54.20%`.
-- Randomized-search random forest accuracy: `57.57%`.
-
-CNN experiments are present and include confusion matrix/most-confused outputs,
-but the repo does not currently include a clear final CNN metric table.
+- Random forest accuracy: `54.20%`
+- Randomized-search random forest accuracy: `57.57%`
 
 ## Dataset
 
@@ -32,8 +31,8 @@ forest models.
 | Random forest accuracy | 54.20% |
 | Randomized-search random forest accuracy | 57.57% |
 
-The same notebook plots normalized confusion matrices for both the baseline and
-randomized-search random forest.
+The rebuild script can regenerate the feature tables and this report once the
+NSynth data layout is present locally.
 
 ## CNN evidence status
 
@@ -51,8 +50,8 @@ Committed outputs show:
 - Most-confused class pairs such as `brass` vs `reed`, `flute` vs `reed`, and
   `vocal` vs `string`.
 
-Final CNN accuracy is marked pending until a metrics table can be regenerated
-from a pinned environment.
+Final CNN accuracy is marked pending until the class sets are aligned and the
+notebooks are rerun from the pinned environment.
 
 ## Demo plan
 
